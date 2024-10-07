@@ -4,11 +4,9 @@ import org.springframework.ui.Model;
 import com.hotel.demo.entity.Encuesta;
 import com.hotel.demo.repository.EncuestaRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +67,16 @@ public class EncuestaController {
         encuesta.setId(id);
         encuestaRepository.save(encuesta);
         return "redirect:/filtrer";
+    }
+    @PostMapping("/satisfaction")
+    public String satisfaction(@RequestParam("satisfaccion") String satisfaccion, Model model){
+        List<Encuesta> filtrado= new ArrayList<>();
+        encuestaRepository.findAll().forEach(encuesta -> {
+            if(encuesta.getSatisfaccion().equals(satisfaccion)){
+                filtrado.add(encuesta);
+            }
+        });
+        model.addAttribute("filtrado", filtrado);
+        return "satisfaction-filtred";
     }
 }

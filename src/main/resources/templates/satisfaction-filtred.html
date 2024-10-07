@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Encuestas</title>
+    <title>Filtrado</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -49,22 +49,10 @@
     </style>
 </head>
 <body>
-<form th:action="@{/satisfaction}" method="POST">
-    <label for="satisfaccion">Nivel de Satisfacción:</label>
-    <select id="satisfaccion" name="satisfaccion">
-        <option value="">Seleccione una opción</option>
-        <option value="muy-satisfecho">Muy Satisfecho</option>
-        <option value="satisfecho">Satisfecho</option>
-        <option value="neutral">Neutral</option>
-        <option value="insatisfecho">Insatisfecho</option>
-        <option value="muy-insatisfecho">Muy Insatisfecho</option>
-    </select>
-    <button type="submit">Filtrar</button>
-</form>
 <div id="encuestas">
-    <h1 th:if="${#lists.isEmpty(encuestas)}">No hay encuestas</h1>
+    <h1 th:if="${#lists.isEmpty(filtrado)}">No hay encuestas</h1>
     <ul>
-        <li th:each="encuesta: ${encuestas}">
+        <li th:each="encuesta: ${filtrado}">
             <p>Encuesta: <span th:text="${encuesta.id}"></span></p>
             <p>Nombre: <span th:text="${encuesta.nombre}"></span></p>
             <p>Fecha de inicio: <span th:text="${encuesta.estancia}"></span></p>
@@ -77,6 +65,6 @@
         </li>
     </ul>
 </div>
-<a th:href="@{/new}">Crear formulario</a>
+<a th:href="@{filtrer}">Volver</a>
 </body>
 </html>
