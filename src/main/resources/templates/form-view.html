@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Encuesta: <span th:text="${encuesta.id}"></span></h2>
+    <ul>
+        <li>Nombre: <span th:text="${encuesta.nombre}"></span></li>
+        <li> Apellidos: <span th:text="${encuesta.apellidos}"></span></li>
+        <li> Email: <span th:text="${encuesta.email}"></span></li>
+        <li> Edad: <span th:text="${encuesta.edad}"></span></li>
+        <li> Teléfono: <span th:text="${encuesta.telefono}"></span></li>
+        <li> Estancia: <span th:text="${encuesta.estancia}"></span></li>
+        <li> Piscina: <span th:text="${encuesta.piscina}"></span></li>
+        <li> Tenis para fracasados: <span th:text="${encuesta.padel}"></span></li>
+        <li> Restaurante: <span th:text="${encuesta.restaurante}"></span></li>
+        <li> Satisfacción: <span th:text="${encuesta.satisfaccion}"></span></li>
+        <li> Comentario: <span th:text="${encuesta.comentario}"></span></li>
+    </ul>
+</body>
+</html>

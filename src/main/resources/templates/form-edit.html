@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Reserva</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        .checkbox-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+<form th:action="@{/edit/{id}(id=${encuesta.id})}" th:object="${encuesta}" method="POST" >
+    <h2>Editar encuesta: <span th:text="${encuesta.id}"></span></h2>
+
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" th:field="${encuesta.nombre}">
+
+    <label for="apellidos">Apellidos:</label>
+    <input type="text" id="apellidos" name="apellidos" th:field="${encuesta.apellidos}">
+
+    <label for="email">Correo Electrónico:</label>
+    <input type="email" id="email" name="email" th:field="${encuesta.email}">
+
+    <label for="edad">Edad:</label>
+    <input type="number" id="edad" name="edad" min="0" th:field="${encuesta.edad}">
+
+    <label for="telefono">Teléfono:</label>
+    <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="123456789" th:field="${encuesta.telefono}">
+
+    <label for="estancia">Fecha de Estancia:</label>
+    <input type="date" id="estancia" name="estancia" th:field="${encuesta.estancia}">
+
+    <label>Servicios:</label>
+    <div class="checkbox-group">
+        <div>
+            <input type="checkbox" id="piscina" name="piscina" th:field="${encuesta.piscina}">
+            <label for="piscina">Piscina</label>
+        </div>
+        <div>
+            <input type="checkbox" id="padel" name="padel" th:field="${encuesta.padel}">
+            <label for="padel">Pádel</label>
+        </div>
+        <div>
+            <input type="checkbox" id="restaurante" name="restaurante" th:field="${encuesta.restaurante}">
+            <label for="restaurante">Restaurante</label>
+        </div>
+    </div>
+
+    <label for="satisfaccion">Nivel de Satisfacción:</label>
+    <select id="satisfaccion" name="satisfaccion" th:field="${encuesta.satisfaccion}">
+        <option value="">Seleccione una opción</option>
+        <option value="muy-satisfecho">Muy Satisfecho</option>
+        <option value="satisfecho">Satisfecho</option>
+        <option value="neutral">Neutral</option>
+        <option value="insatisfecho">Insatisfecho</option>
+        <option value="muy-insatisfecho">Muy Insatisfecho</option>
+    </select>
+
+    <label for="comentario">Comentarios:</label>
+    <textarea id="comentario" name="comentario" rows="4" placeholder="Escribe tus comentarios aquí..." th:field="${encuesta.comentario}"></textarea>
+
+    <button type="submit" class="submit-btn">Enviar</button>
+</form>
+
+</body>
+</html>

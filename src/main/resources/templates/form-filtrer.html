@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Encuestas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 20px;
+        }
+
+        #encuestas {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #dc3545; /* Color para el mensaje de "No hay encuestas" */
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        a {
+            display: inline-block;
+            margin: 5px 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .button-container {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="encuestas">
+    <h1 th:if="${#lists.isEmpty(encuestas)}">No hay encuestas</h1>
+    <ul>
+        <li th:each="encuesta: ${encuestas}">
+            <p>Encuesta: <span th:text="${encuesta.id}"></span></p>
+            <p>Nombre: <span th:text="${encuesta.nombre}"></span></p>
+            <p>Fecha de inicio: <span th:text="${encuesta.estancia}"></span></p>
+            <p>Nivel de satisfacción: <span th:text="${encuesta.satisfaccion}"></span></p>
+            <div class="button-container">
+                <a th:href="@{/view/{id}(id=${encuesta.id})}">Ver</a>
+                <a th:href="@{/edit/{id}(id=${encuesta.id})}">Editar</a>
+                <a th:href="@{/del/{id}(id=${encuesta.id})}">Borrar</a>
+            </div>
+        </li>
+    </ul>
+</div>
+<a th:href="@{/new}">Crear formulario</a>
+</body>
+</html>
