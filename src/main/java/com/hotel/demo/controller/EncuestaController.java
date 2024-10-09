@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 public class EncuestaController {
@@ -39,6 +40,10 @@ public class EncuestaController {
     }
     @GetMapping("/filtrer")
     public String filtrer(Model model){
+        String edadMedia = EncuestaController.mediaEdad(encuestaRepository);
+        Long total=encuestaRepository.count();
+        model.addAttribute("edadMedia",edadMedia);
+        model.addAttribute("total",total);
         model.addAttribute("encuestas", encuestaRepository.findAll());
         return "form-filtrer";
     }
@@ -71,12 +76,63 @@ public class EncuestaController {
     @PostMapping("/satisfaction")
     public String satisfaction(@RequestParam("satisfaccion") String satisfaccion, Model model){
         List<Encuesta> filtrado= new ArrayList<>();
+        AtomicInteger cantidadAtom=new AtomicInteger(0);
+        int cantidad=0;
         encuestaRepository.findAll().forEach(encuesta -> {
             if(encuesta.getSatisfaccion().equals(satisfaccion)){
                 filtrado.add(encuesta);
+                cantidadAtom.incrementAndGet();
             }
         });
+        cantidad=cantidadAtom.get();
+        model.addAttribute("cantidad",cantidad);
         model.addAttribute("filtrado", filtrado);
         return "satisfaction-filtred";
+    }
+    public static String mediaEdad(EncuestaRepository encuestaRepository){
+        AtomicInteger totalEdad=new AtomicInteger(0);
+        int cant=0;
+        long media = 0;
+        String ret="";
+        encuestaRepository.findAll().forEach(encuesta -> {
+            totalEdad.addAndGet(encuesta.getEdad());
+        });
+        cant=totalEdad.get();
+        media=cant*encuestaRepository.count()/100;
+        ret=ret.concat(String.valueOf(media)+"%");
+        return ret;
+    }
+    public static List<String> procentajeSatisfaccion(EncuestaRepository encuestaRepository){
+        List<Encuesta> encuestas = encuestaRepository.findAll();
+        List<String> ret= new ArrayList<String>();
+        long total=encuestaRepository.count();
+        int []cants=new int[5];
+        cants[0]=0;
+        cants[1]=0;
+        cants[2]=0;
+        cants[3]=0;
+        cants[4]=0;
+        encuestaRepository.findAll().forEach(encuesta -> {
+           switch (encuesta.getSatisfaccion()){
+               case "muy-satisfecho":
+                   cants[0]++;
+                   break;
+               case "satisfecho":
+                   cants[1]++;
+                   break;
+               case "neutral":
+                   cants[2]++;
+                   break;
+               case "insatisfecho":
+                   cants[3]++;
+                   break;
+               case "muy-insatisfecho":
+                   cants[4]++;
+                   break;
+           }
+        });
+        //Calcular cantidad de las medias
+        ret.add(String.valueOf((cants[0]))+"%");
+        return ret;
     }
 }
