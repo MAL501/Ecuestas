@@ -101,7 +101,7 @@ public class EncuestaController {
             totalEdad.addAndGet(encuesta.getEdad());
         });
         cant=totalEdad.get();
-        media=cant*cuenta;
+        media=cant/cuenta;
         ret=Double.toString(media);
         return ret;
     }
@@ -135,11 +135,11 @@ public class EncuestaController {
            }
         });
         //Calcular cantidad de las medias
-        ret.add("El porcentaje de usuarios muy satisfechos es: "+String.valueOf((cants[0]*total/100))+"%");
-        ret.add("El porcentaje de usuarios satisfechos es: "+String.valueOf((cants[1]*total/100))+"%");
-        ret.add("El porcentaje de usuarios neutrales es: "+String.valueOf((cants[2]*total/100))+"%");
-        ret.add("El porcentaje de usuarios insatisfechos es: "+String.valueOf((cants[3]*total/100))+"%");
-        ret.add("El porcentaje de usuarios muy insatisfechos es: "+String.valueOf((cants[4]*total/100))+"%");
+        ret.add("El porcentaje de usuarios muy satisfechos es: "+String.valueOf((cants[0]/total*100))+"%");
+        ret.add("El porcentaje de usuarios satisfechos es: "+String.valueOf((cants[1]/total*100))+"%");
+        ret.add("El porcentaje de usuarios neutrales es: "+String.valueOf((cants[2]/total*100))+"%");
+        ret.add("El porcentaje de usuarios insatisfechos es: "+String.valueOf((cants[3]/total*100))+"%");
+        ret.add("El porcentaje de usuarios muy insatisfechos es: "+String.valueOf((cants[4]/total*100))+"%");
         return ret;
     }
 }

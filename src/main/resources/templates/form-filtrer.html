@@ -82,7 +82,7 @@
 <p>Edad media de los encuestados: <span th:text="${edadMedia}"></span></p>
 <ul>
     <li th:each="porcentaje: ${porcentajes}">
-        <p th:text="${porcentaje.getText()}"></p>
+        <p th:text="${porcentaje.toString()}"></p>
     </li>
 </ul>
 <a th:href="@{/new}">Crear formulario</a>
