@@ -40,11 +40,13 @@ public class EncuestaController {
     }
     @GetMapping("/filtrer")
     public String filtrer(Model model){
-        String edadMedia = EncuestaController.mediaEdad(encuestaRepository);
         Long total=encuestaRepository.count();
+        model.addAttribute("encuestas", encuestaRepository.findAll());
+        String edadMedia = mediaEdad();
+        List porcentajes = procentajeSatisfaccion();
+        model.addAttribute("porcentajes", porcentajes);
         model.addAttribute("edadMedia",edadMedia);
         model.addAttribute("total",total);
-        model.addAttribute("encuestas", encuestaRepository.findAll());
         return "form-filtrer";
     }
     @GetMapping("/view/{id}")
@@ -89,24 +91,25 @@ public class EncuestaController {
         model.addAttribute("filtrado", filtrado);
         return "satisfaction-filtred";
     }
-    public static String mediaEdad(EncuestaRepository encuestaRepository){
+    public String mediaEdad(){
         AtomicInteger totalEdad=new AtomicInteger(0);
-        int cant=0;
-        long media = 0;
+        double cant=0;
+        double media = 0;
+        double cuenta=encuestaRepository.count();
         String ret="";
         encuestaRepository.findAll().forEach(encuesta -> {
             totalEdad.addAndGet(encuesta.getEdad());
         });
         cant=totalEdad.get();
-        media=cant*encuestaRepository.count()/100;
-        ret=ret.concat(String.valueOf(media)+"%");
+        media=cant*cuenta;
+        ret=Double.toString(media);
         return ret;
     }
-    public static List<String> procentajeSatisfaccion(EncuestaRepository encuestaRepository){
+    public List<String> procentajeSatisfaccion(){
         List<Encuesta> encuestas = encuestaRepository.findAll();
         List<String> ret= new ArrayList<String>();
-        long total=encuestaRepository.count();
-        int []cants=new int[5];
+        double total=encuestaRepository.count();
+        double []cants=new double[5];
         cants[0]=0;
         cants[1]=0;
         cants[2]=0;
@@ -132,7 +135,11 @@ public class EncuestaController {
            }
         });
         //Calcular cantidad de las medias
-        ret.add(String.valueOf((cants[0]))+"%");
+        ret.add("El porcentaje de usuarios muy satisfechos es: "+String.valueOf((cants[0]*total/100))+"%");
+        ret.add("El porcentaje de usuarios satisfechos es: "+String.valueOf((cants[1]*total/100))+"%");
+        ret.add("El porcentaje de usuarios neutrales es: "+String.valueOf((cants[2]*total/100))+"%");
+        ret.add("El porcentaje de usuarios insatisfechos es: "+String.valueOf((cants[3]*total/100))+"%");
+        ret.add("El porcentaje de usuarios muy insatisfechos es: "+String.valueOf((cants[4]*total/100))+"%");
         return ret;
     }
 }
